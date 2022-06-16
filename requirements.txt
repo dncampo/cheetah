@@ -8,6 +8,7 @@ wheel>=0.29
 numpy==1.22.4
 pandas==1.4.2
 scikit-learn==1.1.1
+tensorflow==2.8.2
 
 # tests/linter
 black
