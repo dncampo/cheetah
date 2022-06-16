@@ -71,3 +71,55 @@ heroku_create_app:
 deploy_heroku:
 	-@git push heroku master
 	-@heroku ps:scale web=1
+
+
+
+# ----------------------------------
+#         GCP COMMANDS
+# ----------------------------------
+
+PROJECT_ID=ham10k-wagon
+BUCKET_NAME=ham10k-storage
+REGION=europe-west1
+
+set_project:
+	gcloud config set project ${PROJECT_ID}
+
+create_bucket:
+	gsutil mb -l ${REGION} -p ${PROJECT_ID} gs://${BUCKET_NAME}
+
+
+# path to the file to upload to GCP (the path to the file should be absolute or
+# should match the directory where the make command is ran)
+# replace with your local path to the `train_1k.csv` and make sure to put the path between quotes
+LOCAL_PATH="raw_data/"
+
+# bucket directory in which to store the uploaded file (`data` is an arbitrary name that we choose to use)
+BUCKET_FOLDER=data
+
+# name for the uploaded file inside of the bucket (we choose not to rename the file that we upload)
+BUCKET_FILE_NAME=$(shell basename ${LOCAL_PATH})
+
+upload_data:
+	gsutil cp -r ${LOCAL_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_FILE_NAME}
+
+
+run_locally:
+	@python -m ${PACKAGE_NAME}.${FILENAME}
+
+gcp_submit_training:
+	gcloud ai-platform jobs submit training ${JOB_NAME} \
+		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
+		--package-path ${PACKAGE_NAME} \
+		--module-name ${PACKAGE_NAME}.${FILENAME} \
+		--python-version=${PYTHON_VERSION} \
+		--runtime-version=${RUNTIME_VERSION} \
+		--region ${REGION} \
+		--stream-logs
+
+clean:
+	@rm -f */version.txt
+	@rm -f .coverage
+	@rm -fr */__pycache__ __pycache__
+	@rm -fr build dist *.dist-info *.egg-info
+	@rm -fr */*.pyc
