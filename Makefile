@@ -92,7 +92,7 @@ run_locally:
 JOB_NAME=${PACKAGE_NAME}_${MODEL_NAME}_${MODEL_VERSION}_$(shell date +'%Y%m%d_%H%M%S')
 
 gcp_submit_training:
-	export ENV=gcp && gcloud ai-platform jobs submit training ${JOB_NAME} \
+	gcloud ai-platform jobs submit training ${JOB_NAME} \
 		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
 		--package-path ${PACKAGE_NAME} \
 		--module-name ${PACKAGE_NAME}.${FILENAME} \
@@ -102,7 +102,7 @@ gcp_submit_training:
 		--stream-logs
 
 gcp_submit_training_basic:
-	export ENV=gcp && gcloud ai-platform jobs submit training ${JOB_NAME} \
+	gcloud ai-platform jobs submit training ${JOB_NAME} \
 		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
 		--package-path ${PACKAGE_NAME} \
 		--module-name ${PACKAGE_NAME}.${FILENAME} \
