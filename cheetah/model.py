@@ -44,7 +44,7 @@ def fit_with_earlystop(model, train_set, validation_set, patience=20):
 
     model.fit(train_set,
             validation_data=validation_set,
-            epochs=3,
+            epochs=300,
             callbacks=[es],
             verbose=2)
     return model
