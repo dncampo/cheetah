@@ -64,7 +64,7 @@ class Trainer(MLFlowBase):
         self.mlflow_log_param("image_size",(IMAGE_HEIGHT,IMAGE_WIDTH))
         self.mlflow_log_param("n_params", f'{model.count_params():,}')
         self.mlflow_log_param("duration", f'{duration:.2f}')
-        self.mlflow_log_param("env", os.environ.get('ENV'))
+        self.mlflow_log_param("env", os.environ.get('ENV', default="gcp"))
 
 
 
