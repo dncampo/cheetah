@@ -3,6 +3,8 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten
 from tensorflow.keras.layers import Dropout, Dense, Rescaling
 from tensorflow.keras.callbacks import EarlyStopping
 
+from cheetah.utils import timer_func
+
 def initialize_model(model_name):
     if model_name == "CNN":
         model = Sequential()
@@ -39,12 +41,13 @@ def compile(model,learning_rate=0.0003, beta_1=0.9, beta_2=0.999):
                 metrics=['accuracy'])
     return model
 
+@timer_func
 def fit_with_earlystop(model, train_set, validation_set, patience=20):
     es = EarlyStopping(patience=patience, restore_best_weights=True)
 
     model.fit(train_set,
             validation_data=validation_set,
-            epochs=3,
+            epochs=1,
             callbacks=[es],
             verbose=2)
     return model
