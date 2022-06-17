@@ -26,7 +26,7 @@ class Trainer(MLFlowBase):
 
         # balance data mel vs non-mel
         df = data.data_balancer(df)
-
+        #df = data.reduce_set(df, 100)
         # prepare tensor dataframe with extracted images and labels
         ds = prepare_dataset(df)
 
