@@ -1,24 +1,23 @@
-from cheetah import params
+from cheetah import mlflow
+from cheetah.params import *
 from cheetah.mlflow import MLFlowBase
 from cheetah import data
 from cheetah.pipeline import prepare_dataset, tf_train_val_split
 from cheetah.utils import configure_for_performance
 from cheetah.model import initialize_model, compile, fit_with_earlystop
+import os
 
 class Trainer(MLFlowBase):
 
     def __init__(self):
         super().__init__(
-            params.EXPERIMENT_NAME,
-            params.MLFLOW_URI)
+            EXPERIMENT_NAME,
+            MLFLOW_URI)
 
     def train(self):
 
         # create a mlflow training
         self.mlflow_create_run()
-
-        # log params
-        self.mlflow_log_param("model_name", params.MODEL_NAME)
 
         # load data and get corresponding image paths
         df = data.get_data()
@@ -26,7 +25,7 @@ class Trainer(MLFlowBase):
 
         # balance data mel vs non-mel
         df = data.data_balancer(df)
-        #df = data.reduce_set(df, 100)
+
         # prepare tensor dataframe with extracted images and labels
         ds = prepare_dataset(df)
 
@@ -43,11 +42,11 @@ class Trainer(MLFlowBase):
         test = configure_for_performance(test)
 
         # initialize model
-        model = initialize_model(params.MODEL_NAME)
+        model = initialize_model(MODEL_NAME)
         # compile
         model = compile(model)
         # train
-        model = fit_with_earlystop(model, train, val, patience=20)
+        model, duration = fit_with_earlystop(model, train, val, patience=20)
 
         # evaluate
         loss, acc = model.evaluate(test)
@@ -56,8 +55,18 @@ class Trainer(MLFlowBase):
         model.save('model.h5')
 
         # register score in MLFlow
+        self.mlflow_log_param("model_name", MODEL_NAME)
         self.mlflow_log_metric("loss", loss)
         self.mlflow_log_metric("accuracy", acc)
+
+        self.mlflow_log_param("batch_size",BATCH_SIZE)
+        self.mlflow_log_param("n_images", ds.cardinality().numpy())
+        self.mlflow_log_param("image_size",(IMAGE_HEIGHT,IMAGE_WIDTH))
+        self.mlflow_log_param("n_params", f'{model.count_params():,}')
+        self.mlflow_log_param("duration", f'{duration:.2f}')
+        self.mlflow_log_param("env", os.environ.get('ENV'))
+
+
 
         return model
 
