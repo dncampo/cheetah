@@ -1,7 +1,9 @@
-from tensorflow.keras import Sequential, optimizers
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten
-from tensorflow.keras.layers import Dropout, Dense, Rescaling
+from tensorflow.keras import Sequential, optimizers, Model, Input
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dropout
+from tensorflow.keras.layers import Dense, Rescaling, GlobalAveragePooling2D
 from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.applications import Xception, ResNet50, vgg19
+from cheetah.params import IMAGE_HEIGHT, IMAGE_WIDTH
 
 from cheetah.utils import timer_func
 
@@ -9,7 +11,8 @@ def initialize_model(model_name):
     if model_name == "CNN":
         model = Sequential()
         model.add(Rescaling(1./255))
-        model.add(Conv2D(32, kernel_size=(3, 3),activation='relu',padding = 'Same',input_shape=(180,240,3)))
+        model.add(Conv2D(32, kernel_size=(3, 3),activation='relu',padding = 'Same',
+                         input_shape=(IMAGE_HEIGHT,IMAGE_WIDTH,3)))
         model.add(Conv2D(32,kernel_size=(3, 3), activation='relu',padding = 'Same'))
         model.add(MaxPooling2D(pool_size = (2, 2)))
         model.add(Dropout(0.16))
@@ -29,6 +32,63 @@ def initialize_model(model_name):
         model.add(Dense(128, activation='relu'))
         model.add(Dropout(0.4))
         model.add(Dense(1, activation = 'sigmoid'))
+
+    elif model_name == 'Xception':
+        base_model = Xception(
+                        weights='imagenet',  # Load weights pre-trained on ImageNet.
+                        input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3),
+                        include_top=False)  # Do not include the ImageNet classifier at the top.
+
+        base_model.trainable = False  # Freeze the model
+
+        inputs = Input(shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+        # We make sure that the base_model is running in inference mode here,
+        # by passing `training=False`. This is important for fine-tuning, as you will
+        # learn in a few paragraphs.
+        x = base_model(inputs, training=False)
+        # Convert features of shape `base_model.output_shape[1:]` to vectors
+        x = GlobalAveragePooling2D()(x)
+        # A Dense classifier with a single unit (binary classification)
+        outputs = Dense(1, activation = 'sigmoid')(x)
+        model = Model(inputs, outputs)
+
+    elif model_name == 'ResNet50':
+        base_model = ResNet50(
+                        weights='imagenet',  # Load weights pre-trained on ImageNet.
+                        input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3),
+                        include_top=False)  # Do not include the ImageNet classifier at the top.
+
+        base_model.trainable = False  # Freeze the model
+
+        inputs = Input(shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+        # We make sure that the base_model is running in inference mode here,
+        # by passing `training=False`. This is important for fine-tuning, as you will
+        # learn in a few paragraphs.
+        x = base_model(inputs, training=False)
+        # Convert features of shape `base_model.output_shape[1:]` to vectors
+        x = GlobalAveragePooling2D()(x)
+        # A Dense classifier with a single unit (binary classification)
+        outputs = Dense(1, activation = 'sigmoid')(x)
+        model = Model(inputs, outputs)
+
+    elif model_name == 'VGG19':
+        base_model = vgg19.VGG19(
+                        weights='imagenet',  # Load weights pre-trained on ImageNet.
+                        input_shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3),
+                        include_top=False)  # Do not include the ImageNet classifier at the top.
+
+        base_model.trainable = False  # Freeze the model
+
+        inputs = Input(shape=(IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+        # We make sure that the base_model is running in inference mode here,
+        # by passing `training=False`. This is important for fine-tuning, as you will
+        # learn in a few paragraphs.
+        x = base_model(inputs, training=False)
+        # Convert features of shape `base_model.output_shape[1:]` to vectors
+        x = GlobalAveragePooling2D()(x)
+        # A Dense classifier with a single unit (binary classification)
+        outputs = Dense(1, activation = 'sigmoid')(x)
+        model = Model(inputs, outputs)
 
     return model
 
