@@ -46,25 +46,25 @@ class Trainer(MLFlowBase):
         model = initialize_model(MODEL_NAME)
         # compile
         model = compile(model)
-        # train
+        # train model and get duration via timer_func decorator
         model, duration = fit_with_earlystop(model, train, val, patience=20)
 
-        # evaluate
+        # evaluate model and get loss and accuracy
         loss, acc = model.evaluate(test)
 
         # save the trained model
         model_path = ''
         ts_str = datetime.now().strftime("%Y%m%d_%H%M%S") # current date and time
         if os.environ.get('ENV') == 'gcp':
-            path_model = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
+            model_path = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
 
         model.save(model_path + MODEL_NAME + "_" + ts_str + ".h5")
 
-        # register score in MLFlow
-        self.mlflow_log_param("model_name", MODEL_NAME)
+        # register metrics and custom parameters in MLFlow
         self.mlflow_log_metric("loss", loss)
         self.mlflow_log_metric("accuracy", acc)
 
+        self.mlflow_log_param("model_name", MODEL_NAME)
         self.mlflow_log_param("batch_size",BATCH_SIZE)
         self.mlflow_log_param("n_images", ds.cardinality().numpy())
         self.mlflow_log_param("image_size",(IMAGE_HEIGHT,IMAGE_WIDTH))
