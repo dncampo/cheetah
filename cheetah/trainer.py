@@ -6,6 +6,7 @@ from cheetah.pipeline import prepare_dataset, tf_train_val_split
 from cheetah.utils import configure_for_performance
 from cheetah.model import initialize_model, compile, fit_with_earlystop
 import os
+from datetime import datetime
 
 class Trainer(MLFlowBase):
 
@@ -52,7 +53,12 @@ class Trainer(MLFlowBase):
         loss, acc = model.evaluate(test)
 
         # save the trained model
-        model.save('model.h5')
+        model_path = ''
+        ts_str = datetime.now().strftime("%Y%m%d_%H%M%S") # current date and time
+        if os.environ.get('ENV') == 'gcp':
+            path_model = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
+
+        model.save(model_path + MODEL_NAME + "_" + ts_str + ".h5")
 
         # register score in MLFlow
         self.mlflow_log_param("model_name", MODEL_NAME)
