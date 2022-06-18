@@ -56,7 +56,7 @@ class Trainer(MLFlowBase):
         model_path = ''
         ts_str = datetime.now().strftime("%Y%m%d_%H%M%S") # current date and time
         if os.environ.get('ENV') == 'gcp':
-            path_model = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
+            model_path = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
 
         model.save(model_path + MODEL_NAME + "_" + ts_str + ".h5")
 
