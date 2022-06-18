@@ -1,22 +1,22 @@
-
+import os
 # ----------------------------------
 #            Model Params
 # ----------------------------------
-BATCH_SIZE=16
-IMAGE_HEIGHT=180
-IMAGE_WIDTH=240
+BATCH_SIZE=32
+IMAGE_HEIGHT=90
+IMAGE_WIDTH=120
 # ----------------------------------
 #               MLFlow
 # ----------------------------------
 
 MLFLOW_URI = "https://mlflow.lewagon.ai/"
-
+USER = os.environ.get('USER', default='DEFAULT')
 EXPERIMENT_NAME = "[FR] [Nice] [abdielrt,dncampo] Computer Vision v1.0"
 
 # ----------------------------------
 #      Google Cloud Plateform
 # ----------------------------------
-PROJECT_ID='ham10k-wagon'
+PROJECT_ID='art-ham10k-wagon' if USER == 'art' else 'ham10k-wagon'
 BUCKET_NAME = 'ham10k-storage'
 REGION='europe-west1'
 ##### Data  - - - - - - - - - - - - - - - - - - - - - - - -

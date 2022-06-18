@@ -1,11 +1,12 @@
 import tensorflow as tf
+from cheetah.params import IMAGE_HEIGHT, IMAGE_WIDTH
 from tensorflow.io import decode_jpeg, read_file
 from tensorflow.image import resize
 from tensorflow.data import AUTOTUNE, Dataset
 
 
-def decode_resize(img,img_height=180, img_width=240):
-    '''Decodes JPG img=image and resizes to img_height=180, img_width=240.
+def decode_resize(img,img_height=IMAGE_HEIGHT, img_width=IMAGE_WIDTH):
+    '''Decodes JPG img=image and resizes to img_height, img_width.
     Returns a uint8 resize image'''
     # Convert the compressed string to a 3D uint8 tensor
     img = decode_jpeg(img, channels=3)
