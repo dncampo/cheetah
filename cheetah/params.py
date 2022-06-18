@@ -1,22 +1,20 @@
-import os
 # ----------------------------------
 #            Model Params
 # ----------------------------------
-BATCH_SIZE=32
-IMAGE_HEIGHT=90
-IMAGE_WIDTH=120
+BATCH_SIZE=64
+IMAGE_HEIGHT=360
+IMAGE_WIDTH=480
 # ----------------------------------
 #               MLFlow
 # ----------------------------------
 
 MLFLOW_URI = "https://mlflow.lewagon.ai/"
-USER = os.environ.get('USER', default='DEFAULT')
 EXPERIMENT_NAME = "[FR] [Nice] [abdielrt,dncampo] Computer Vision v1.0"
 
 # ----------------------------------
 #      Google Cloud Plateform
 # ----------------------------------
-PROJECT_ID='art-ham10k-wagon' if USER == 'art' else 'ham10k-wagon'
+#PROJECT_ID='art-ham10k-wagon' if USER == 'art' else 'ham10k-wagon'
 BUCKET_NAME = 'ham10k-storage'
 REGION='europe-west1'
 ##### Data  - - - - - - - - - - - - - - - - - - - - - - - -
@@ -34,7 +32,7 @@ BUCKET_IMAGE_FOLDER = 'data/raw_data/'
 ##### Model - - - - - - - - - - - - - - - - - - - - - - - -
 
 # model folder name (will contain the folders for all trained model versions)
-MODEL_NAME = 'CNN'
+MODEL_NAME = 'ResNet50'
 
 ##### Package params  - - - - - - - - - - - - - - - - - - -
 
@@ -45,7 +43,6 @@ FILENAME='trainer'
 MODEL_VERSION = 'v1'
 
 
-STORAGE_LOCATION = 'models/cheetah/model.h5'
 LOCAL_PATH="raw_data/"
 BUCKET_FOLDER='data'
 BUCKET_TRAINING_FOLDER='models'
