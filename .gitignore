@@ -8,3 +8,5 @@ raw_data/
 .env
 .python-version
 *.h5
+.vscode
+.python-version
