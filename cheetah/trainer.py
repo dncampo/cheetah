@@ -1,4 +1,3 @@
-from cheetah import mlflow
 from cheetah.params import *
 from cheetah.mlflow import MLFlowBase
 from cheetah import data
