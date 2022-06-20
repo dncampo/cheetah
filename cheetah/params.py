@@ -24,6 +24,7 @@ REGION='europe-west1'
 # or if you want to use the full dataset (you need need to upload it first of course)
 BUCKET_TRAIN_DATA_PATH = 'data/raw_data/HAM10000_metadata.csv'
 BUCKET_AUGMENT_DATA_PATH = 'data/raw_data/augment/mel_augmented.csv'
+BUCKET_TEST_DATA_PATH = 'data/raw_data/augment/mel_test.csv'
 BUCKET_IMAGE_FOLDER = 'data/raw_data/'
 
 ##### Training  - - - - - - - - - - - - - - - - - - - - - -
