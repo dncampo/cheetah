@@ -1,3 +1,4 @@
+from cheetah.augment.data import data_augment_balancer, get_augment_data
 from cheetah.params import *
 from cheetah.mlflow import MLFlowBase
 from cheetah import data
@@ -22,9 +23,10 @@ class Trainer(MLFlowBase):
         # load data and get corresponding image paths
         df = data.get_data()
         df = data.path_to_metadata(df)
+        aug_df = get_augment_data()
 
-        # balance data mel vs non-mel
-        df = data.data_balancer(df)
+        # balance data mel-augmented images vs non-mel
+        df = data_augment_balancer(df, aug_df, n_images=1113)
 
         # prepare tensor dataframe with extracted images and labels
         ds = prepare_dataset(df)
