@@ -1,9 +1,9 @@
 # ----------------------------------
 #            Model Params
 # ----------------------------------
-BATCH_SIZE=64
-IMAGE_HEIGHT=360
-IMAGE_WIDTH=480
+BATCH_SIZE=32
+IMAGE_HEIGHT=90
+IMAGE_WIDTH=120
 # ----------------------------------
 #               MLFlow
 # ----------------------------------
@@ -32,7 +32,7 @@ BUCKET_IMAGE_FOLDER = 'data/raw_data/'
 ##### Model - - - - - - - - - - - - - - - - - - - - - - - -
 
 # model folder name (will contain the folders for all trained model versions)
-MODEL_NAME = 'ResNet50'
+MODEL_NAME = 'ResNet50_finetuned'
 
 ##### Package params  - - - - - - - - - - - - - - - - - - -
 
