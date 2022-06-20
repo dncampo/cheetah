@@ -15,13 +15,18 @@ def get_augment_data():
 
     Returns two pd.Dataframes for augmented and test images.
     """
+    prefix_path = 'data'
     path = f"gs://{BUCKET_NAME}/{BUCKET_AUGMENT_DATA_PATH}" #gcp path by default
     test_path = f"gs://{BUCKET_NAME}/{BUCKET_TEST_DATA_PATH}"
     if ENV == 'local':
-        path = 'raw_data/augment/mel_augmented.csv'
-        test_path = 'raw_data/augment/mel_test.csv'
+        prefix_path = ''
+        path = 'raw_data/augment/mel/mel_augmented.csv'
+        test_path = 'raw_data/augment/mel/mel_test.csv'
     augment_df = pd.read_csv(path)
     test_mel_df = pd.read_csv(test_path)
+    if prefix_path != '':
+        test_mel_df['path'] = test_mel_df['path'].map(lambda x: \
+                                                os.path.join(prefix_path, x))
     return augment_df, test_mel_df
 
 def path_to_metadata(df):
