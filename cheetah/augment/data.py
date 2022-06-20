@@ -45,10 +45,23 @@ def data_augment_balancer(df, aug_df, n_images=1113):
     # Retrieve Nevi
     rest_df = df.query('dx == "nv"')
     #randomly takes indexes equal number of melanoma observations
+<<<<<<< Updated upstream
     idx_nonmel = np.random.choice(list(rest_df.index), n_images)
     non_mel_balanced = df.iloc[idx_nonmel]
     # add path to non_mel df
     non_mel_balanced = path_to_metadata(non_mel_balanced)
+=======
+    train_test_rest = rest_df.sample(int(0.1 * len(rest_df)) + class_size)
+
+    # add path to non_melanoma df
+    train_test_rest = path_to_metadata(train_test_rest)
+    # holdout
+    train_rest = train_test_rest[:class_size]
+    test_rest = train_test_rest[class_size:]
+
+    # add path to melanoma df
+    mel_df = path_to_metadata(mel_df)
+>>>>>>> Stashed changes
 
     # Retrieve Melanoma augmented images
     idx_mel = np.random.choice(list(aug_df.index), n_images)
