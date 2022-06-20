@@ -4,6 +4,10 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from front.home import home
 from front.upload_photo import upload_photo
+# Tensorflow
+import os
+import tensorflow.keras.models as tfkm
+
 
 '''
 # HAM10000k front-end
@@ -14,6 +18,22 @@ HOME = "Home"
 TEST_PHOTO = "Select from test photos"
 UPLOAD_PHOTO = "Upload photo"
 SETTINGS = "Settings"
+
+@st.cache(allow_output_mutation=True)
+def load_model():
+    print("loading model: ")
+#    if not 'model' in globals():
+    #json_file = open(os.path.join('models', 'model_architecture.json'), 'r')
+    #json_savedModel= json_file.read()
+    #return tfkm.model_from_json(json_savedModel)
+    model = tfkm.load_model('models/ResNet50_20220620_000736.h5')
+    return model
+
+#pre trained model to do predictions
+
+model = load_model()
+
+
 
 # 1. as sidebar menu
 with st.sidebar:
@@ -26,7 +46,7 @@ if selected==HOME:
 
 
 elif selected==UPLOAD_PHOTO:
-    upload_photo()
+    upload_photo(model)
 
 
 
