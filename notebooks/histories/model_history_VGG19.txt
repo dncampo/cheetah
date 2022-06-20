@@ -102,4 +102,19 @@ INFO	2022-06-18 17:43:46 +0200	master-replica-0		Epoch 51/300
 INFO	2022-06-18 17:43:46 +0200	master-replica-0		51/51 - 1292s - loss: 0.3351 - accuracy: 0.8429 - val_loss: 0.4267 - val_accuracy: 0.8125 - 1292s/epoch - 25s/step
 INFO	2022-06-18 18:05:22 +0200	master-replica-0		Epoch 52/300
 INFO	2022-06-18 18:05:22 +0200	master-replica-0		51/51 - 1296s - loss: 0.3324 - accuracy: 0.8491 - val_loss: 0.4288 - val_accuracy: 0.8050 - 1296s/epoch - 25s/step
-
+INFO	2022-06-18 18:26:56 +0200	master-replica-0		Epoch 53/300
+INFO	2022-06-18 18:26:56 +0200	master-replica-0		51/51 - 1294s - loss: 0.3344 - accuracy: 0.8435 - val_loss: 0.4277 - val_accuracy: 0.8150 - 1294s/epoch - 25s/step
+INFO	2022-06-18 18:48:29 +0200	master-replica-0		Epoch 54/300
+INFO	2022-06-18 18:48:29 +0200	master-replica-0		51/51 - 1293s - loss: 0.3301 - accuracy: 0.8448 - val_loss: 0.4270 - val_accuracy: 0.8125 - 1293s/epoch - 25s/step
+INFO	2022-06-18 19:10:01 +0200	master-replica-0		Epoch 55/300
+INFO	2022-06-18 19:10:01 +0200	master-replica-0		51/51 - 1292s - loss: 0.3287 - accuracy: 0.8485 - val_loss: 0.4273 - val_accuracy: 0.8100 - 1292s/epoch - 25s/step
+INFO	2022-06-18 19:31:32 +0200	master-replica-0		Epoch 56/300
+INFO	2022-06-18 19:31:32 +0200	master-replica-0		51/51 - 1291s - loss: 0.3275 - accuracy: 0.8466 - val_loss: 0.4282 - val_accuracy: 0.8100 - 1291s/epoch - 25s/step
+INFO	2022-06-18 19:53:02 +0200	master-replica-0		Epoch 57/300
+INFO	2022-06-18 19:53:02 +0200	master-replica-0		51/51 - 1290s - loss: 0.3261 - accuracy: 0.8522 - val_loss: 0.4324 - val_accuracy: 0.8050 - 1290s/epoch - 25s/step
+INFO	2022-06-18 20:14:39 +0200	master-replica-0		Epoch 58/300
+INFO	2022-06-18 20:14:39 +0200	master-replica-0		51/51 - 1297s - loss: 0.3271 - accuracy: 0.8498 - val_loss: 0.4291 - val_accuracy: 0.8050 - 1297s/epoch - 25s/step
+INFO	2022-06-18 20:36:12 +0200	master-replica-0		Epoch 59/300
+INFO	2022-06-18 20:36:12 +0200	master-replica-0		51/51 - 1293s - loss: 0.3244 - accuracy: 0.8510 - val_loss: 0.4296 - val_accuracy: 0.8025 - 1293s/epoch - 25s/step
+INFO	2022-06-18 20:57:42 +0200	master-replica-0		Epoch 60/300
+INFO	2022-06-18 20:57:42 +0200	master-replica-0		51/51 - 1290s - loss: 0.3244 - accuracy: 0.8516 - val_loss: 0.4294 - val_accuracy: 0.8100 - 1290s/epoch - 25s/step
