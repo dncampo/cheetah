@@ -26,7 +26,7 @@ def load_model():
     #json_file = open(os.path.join('models', 'model_architecture.json'), 'r')
     #json_savedModel= json_file.read()
     #return tfkm.model_from_json(json_savedModel)
-    model = tfkm.load_model('models/ResNet50_20220620_000736.h5')
+    model = tfkm.load_model('models/ResNet50_finetuned_20220620_134553.h5')
     return model
 
 #pre trained model to do predictions

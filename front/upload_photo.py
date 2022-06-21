@@ -27,7 +27,8 @@ def upload_photo(model):
             #print(model.summary())
 
             #datagenValTest = ImageDataGenerator(preprocessing_function=preprocess_input)
-            image = image.resize((224,224))
+            #image = image.resize((224,224))
+            image = image.resize((120,90))
             image_np = np.array(image)
             image_np = np.expand_dims(image_np, 0)
             print(f"shape of np image: {image_np.shape}")
