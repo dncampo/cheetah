@@ -15,7 +15,7 @@ def get_augment_data():
 
     Returns two pd.Dataframes for augmented and test images.
     """
-    prefix_path = 'data'
+    prefix_path = f"gs://{BUCKET_NAME}/data"
     path = f"gs://{BUCKET_NAME}/{BUCKET_AUGMENT_DATA_PATH}" #gcp path by default
     test_path = f"gs://{BUCKET_NAME}/{BUCKET_TEST_DATA_PATH}"
     if ENV == 'local':
