@@ -15,13 +15,18 @@ def get_augment_data():
 
     Returns two pd.Dataframes for augmented and test images.
     """
+    prefix_path = f"gs://{BUCKET_NAME}/data"
     path = f"gs://{BUCKET_NAME}/{BUCKET_AUGMENT_DATA_PATH}" #gcp path by default
     test_path = f"gs://{BUCKET_NAME}/{BUCKET_TEST_DATA_PATH}"
     if ENV == 'local':
-        path = 'raw_data/augment/mel_augmented.csv'
-        test_path = 'raw_data/augment/mel_test.csv'
+        prefix_path = ''
+        path = 'raw_data/augment/mel/mel_augmented.csv'
+        test_path = 'raw_data/augment/mel/mel_test.csv'
     augment_df = pd.read_csv(path)
     test_mel_df = pd.read_csv(test_path)
+    if prefix_path != '':
+        test_mel_df['path'] = test_mel_df['path'].map(lambda x: \
+                                                os.path.join(prefix_path, x))
     return augment_df, test_mel_df
 
 def path_to_metadata(df):
@@ -67,7 +72,8 @@ def data_augment_balancer(df, aug_df, class_size=2000):
     mel_df = df.query('dx == "mel"')
 
     #randomly takes indexes equal number of melanoma observations
-    train_test_rest = rest_df.sample(0.1 * len(rest_df) + class_size)
+
+    train_test_rest = rest_df.sample(int(0.1 * len(rest_df)) + class_size)
 
     # add path to non_melanoma df
     train_test_rest = path_to_metadata(train_test_rest)
@@ -77,6 +83,7 @@ def data_augment_balancer(df, aug_df, class_size=2000):
 
     # add path to melanoma df
     mel_df = path_to_metadata(mel_df)
+
 
     # Retrieve Melanoma augmented images
     idx_mel = np.random.choice(list(aug_df.index), class_size - len(mel_df))

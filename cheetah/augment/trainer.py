@@ -51,7 +51,7 @@ class Trainer(MLFlowBase):
         # compile
         model = compile(model)
         # train model and get duration via timer_func decorator
-        model, duration = fit_with_earlystop(model, train, val, patience=10)
+        model, duration = fit_with_earlystop(model, train, val, patience=8)
 
         # evaluate model and get loss and accuracy
         loss, acc = model.evaluate(test)
