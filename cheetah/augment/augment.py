@@ -24,8 +24,11 @@ class Augment():
         output_dir: string path to the output directory
 
     Returns:
+        None
+
+    Output:
         N-n, the values of generated samples
-       print("metadata not generated yet") Also, writes in output folder the augmented images, the metadata of
+        Also, writes in output folder the augmented images, the metadata of
             the augmented images and a test.csv with the path to the original
             files to be used for testing (and whose were not seen for augmentation)
             The test.csv file only saves original images, no mater of
@@ -39,7 +42,7 @@ class Augment():
         self.N = N
         self.share_test = share_test
         self.share_test_original = share_test_original
-        self.output_dir = output_dir
+        self.output_dir = os.path.join(output_dir, self.class_augment)
         self.path_to_metadata = path_to_metadata
         #load data and corresponding image paths
         df = pd.read_csv(self.path_to_metadata)
@@ -100,7 +103,7 @@ class Augment():
             head, ham_part = os.path.split(head)
             filename_jpg = row_i['image_id'] + ".jpg"
             original_path = row_i['path']
-            row_i['path'] = os.path.join(head, 'augment', filename_jpg)
+            row_i['path'] = os.path.join(head, 'augment', self.class_augment, filename_jpg)
             list_of_rows.append(row_i)
             PIL_image = self._generate_augmented_image(path_to_image=os.path.join('..','..', original_path))
             PIL_image.save(os.path.join('..', '..', row_i['path']))
@@ -135,5 +138,14 @@ class Augment():
 
 
 if __name__ == '__main__':
-    augment = Augment(N=6705)
+    #goal: 2000
+    #nv: 6705
+    #mel: 1113
+    #bkl = 1099 -> 110
+    #bcc = 514 -> 51
+    #akiec = 327 -> 33
+    #vasc = 142 -> 14
+    #df = 115 -> 11
+
+    augment = Augment(class_augment='df', N=2000+11)
     #augment = Augment(N=1300)
