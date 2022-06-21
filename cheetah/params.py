@@ -35,7 +35,7 @@ BUCKET_IMAGE_FOLDER = 'data/raw_data/'
 ##### Model - - - - - - - - - - - - - - - - - - - - - - - -
 
 # model folder name (will contain the folders for all trained model versions)
-MODEL_NAME = 'ResNet50_finetuned'
+MODEL_NAME = 'ResNet50_multiclass'
 
 ##### Package params  - - - - - - - - - - - - - - - - - - -
 

@@ -26,10 +26,10 @@ def get_augmented_and_test():
         'akiec',
         'bcc',
         'bkl',
-        # 'df',
+        'df',
         'mel',
         'nv',
-        # 'vasc'
+        'vasc'
     ]
     augmented_test_dict = {}
 
@@ -69,23 +69,44 @@ def multiclass_balancer(df, aug_test_dict, class_size=2000):
         balanced_meta: pd.Dataframe with balanced images via data augmentation.
     '''
     test_df = pd.DataFrame()
-    train_df = pd.DataFrame()
-    for key, category_df in aug_test_dict:
+    train_aug_df = pd.DataFrame()
+
+    for key, category_df in aug_test_dict.items():
         # stack test dataframes for all categories
+        print(f'Starting test loop for {key}')
         if 'test' in key:
             test_df = pd.concat([test_df, category_df], axis=0)
+
+    train_orig_df = df[~df.image_id.isin(test_df.image_id)]
+    for key, category_df in aug_test_dict.items():
+        # stack test dataframes for all categories
+        print(f'Starting augmented loop for {key}')
+
         if 'augmented' in key:
+            print(category_df.columns)
             category = key[10:-3]
-            n_original = len(df.query(f'dx == "{category}"'))
+            n_original = len(train_orig_df.query(f'dx == "{category}"'))
             n_augmented = class_size - n_original
-            if n_augmented > 0 and n_augmented <= len(category_df):
-                train_df = pd.concat([train_df,
+            if n_augmented > 0:
+                train_orig = train_orig_df.query(f'dx == "{category}"')
+                train_aug_df = pd.concat([train_aug_df, train_orig,
                                       category_df.sample(n_augmented)],
                                       axis=0)
+            elif n_augmented <= 0:
+                train_aug_df = pd.concat([train_aug_df, train_orig_df.sample(class_size)], axis=0)
+
             elif n_augmented > len(category_df):
                 print('********* Multiclass balancer Error *************')
                 print(f'class_size={class_size}, n_augmented={n_augmented}')
                 exit(-1)
+    print(f'train_aug_df.shape={train_aug_df.shape}')
+    print(f'test_df.shape={test_df.shape}')
+
+    # select n=class_size images for each class
+    train_df = train_aug_df
+
+    print(f'train_orig_df.shape={train_orig_df.shape}')
+    print(f'train_df.shape={train_df.shape}')
     print('********** Taking augmented MULTICLASS data **********')
     return train_df, test_df
 

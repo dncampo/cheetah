@@ -4,10 +4,11 @@ from cheetah.params import *
 from cheetah.mlflow import MLFlowBase
 from cheetah.pipeline import prepare_dataset, tf_train_val_split
 from cheetah.utils import configure_for_performance
-from cheetah.model import initialize_model, compile, fit_with_earlystop
+from cheetah.model import compile_multiclass, initialize_model, compile, fit_with_earlystop
 from datetime import datetime
 import os
 import pandas as pd
+import tensorflow as tf
 
 class Trainer(MLFlowBase):
 
@@ -29,13 +30,14 @@ class Trainer(MLFlowBase):
 
         # balance melanoma + augmented_melanoma images vs non-mel
         train_df, test_df = multiclass_balancer(df, aug_test_dict,
-                                                class_size=2226)
+                                                class_size=100)
 
         # prepare train_val and test dataset with extracted images and labels
-        train_val_ds = prepare_dataset(train_df)
-        test = prepare_dataset(test_df)
+        X_train_val_ds, y_train_val_ds = prepare_dataset(train_df)
+        X_test, y_test = prepare_dataset(test_df)
 
         # shuffle the train_val dataset
+        train_val_ds = tf.stack([X_train_val_ds, y_train_val_ds], axis=1)
         train_val_ds = train_val_ds.shuffle(len(train_val_ds),
                                             reshuffle_each_iteration=False)
 
@@ -47,15 +49,22 @@ class Trainer(MLFlowBase):
         val = configure_for_performance(val)
         test = configure_for_performance(test)
 
+        for img, label in train.take(1):
+            print("Train Image shape: ", img.numpy().shape)
+            print("Train Label: ", label.numpy().shape)
+
+        for img, label in val.take(1):
+            print("VAl Image shape: ", img.numpy().shape)
+            print("VAl Label: ", label.numpy().shape)
         # initialize model
         model = initialize_model(MODEL_NAME)
         # compile
-        model = compile(model)
+        model = compile_multiclass(model)
         # train model and get duration via timer_func decorator
         model, duration = fit_with_earlystop(model, train, val, patience=8)
 
         # evaluate model and get loss and accuracy
-        loss, acc = model.evaluate(test)
+        loss, acc = model.evaluate(X_test, y_test)
 
         # save the trained model
         model_path = ''
