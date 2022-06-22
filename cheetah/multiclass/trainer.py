@@ -29,7 +29,7 @@ class Trainer(MLFlowBase):
 
         # balance classes + augmented classes images
         train_df, test_df = multiclass_balancer(df, aug_test_dict,
-                                                class_size=50)
+                                                class_size=500)
 
         # prepare train_val and test dataset with extracted images and labels
         train_val_ds = prepare_dataset(train_df)
@@ -38,7 +38,6 @@ class Trainer(MLFlowBase):
         # shuffle the train_val dataset
         train_val_ds = train_val_ds.shuffle(train_val_ds.cardinality(), #len(train_val_ds),
                                             reshuffle_each_iteration=False)
-        breakpoint()
         # train validation holdout
         train, val = tf_train_val_split(train_val_ds,val_ratio=0.2)
 
@@ -53,11 +52,9 @@ class Trainer(MLFlowBase):
         model = compile_multiclass(model)
         # train model and get duration via timer_func decorator
         model, duration = fit_with_earlystop(model, train, val, patience=4)
-        breakpoint()
         # evaluate model and get loss and accuracy
         #[loss, accuracy, recall, precision] = model.evaluate(test)
         loss, *metrics = model.evaluate(test)
-        breakpoint()
         # save the trained model
         model_path = ''
         ts_str = datetime.now().strftime("%Y%m%d_%H%M%S") # current date and time
