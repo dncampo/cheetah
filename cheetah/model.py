@@ -4,7 +4,7 @@ from tensorflow.keras.layers import Dense, Rescaling, GlobalAveragePooling2D
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.applications import Xception, ResNet50, vgg19
 from cheetah.params import IMAGE_HEIGHT, IMAGE_WIDTH
-from tensorflow.keras.metrics import categorical_crossentropy, Accuracy, Recall, Precision
+from tensorflow.keras.metrics import categorical_crossentropy, Accuracy, Recall, Precision, CategoricalAccuracy
 from tensorflow.keras.losses import SparseCategoricalCrossentropy, CategoricalCrossentropy
 from cheetah.utils import timer_func
 
@@ -153,12 +153,12 @@ def compile_multiclass(model,learning_rate=0.0003, beta_1=0.9, beta_2=0.999):
 
     model.compile(loss=CategoricalCrossentropy(),
                 optimizer=adam_opt,
-                metrics=['accuracy', Recall(name='recall'), Precision()])
+                metrics=[CategoricalAccuracy(), Recall(name='recall'), Precision()])
     return model
 
 @timer_func
 def fit_with_earlystop(model, train_set, validation_set, patience=20):
-    es = EarlyStopping(monitor='val_recall', mode='max', patience=patience, restore_best_weights=True)
+    es = EarlyStopping(monitor='val_loss', mode='min', patience=patience, restore_best_weights=True)
 
     model.fit(train_set,
             validation_data=validation_set,
