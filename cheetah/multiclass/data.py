@@ -98,10 +98,6 @@ def multiclass_balancer(df, aug_test_dict, class_size=2000):
 
     # select n=class_size images for each class
     train_df = train_aug_df
-
-    print(f'train_df.shape={train_df.shape}')
-    print(f'test_df.shape={test_df.shape}')
-    print('********** Taking augmented MULTICLASS data **********')
     return train_df, test_df
 
 

@@ -41,8 +41,6 @@ def prepare_dataset(df):
     the decoded and resized image with its classification. Optimizes the mapping
     with parallel calls tf.data.AUTOTUNE
     Returns a tf.parallelMapDataset'''
-    print(df.columns)
-    print(df.shape)
     encode_category = {'akiec': 0,
                     'bcc': 1,
                     'bkl': 2,
