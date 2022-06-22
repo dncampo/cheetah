@@ -27,8 +27,4 @@ def save_model(model, filename):
     # Implement here
     model.save(filename)
     print(f"saved h5 model locally, with filename: {filename}")
-
-    #if os.environ.get('ENV') == 'gcp':
-        # Upload model to GCP
     upload_model_to_gcp(model, filename)
-        #model_path = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
