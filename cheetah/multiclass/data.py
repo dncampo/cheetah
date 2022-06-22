@@ -39,8 +39,8 @@ def get_augmented_and_test():
         test_path = os.path.join(path,label,f'{label}_test.csv')
         if ENV == 'local':
             prefix_path = ''
-            path = f'raw_data/augment/{label}/{label}_augmented.csv'
-            test_path = f'raw_data/augment/{label}/{label}_test.csv'
+            path = f'raw_data/augment/'
+            test_path = f'raw_data/augment/{label}/{label}_augmented.csv'
         df = pd.read_csv(os.path.join(path,label,f'{label}_augmented.csv'))
         test_df = pd.read_csv(test_path)
         if prefix_path != '':
@@ -73,17 +73,13 @@ def multiclass_balancer(df, aug_test_dict, class_size=2000):
 
     for key, category_df in aug_test_dict.items():
         # stack test dataframes for all categories
-        print(f'Starting test loop for {key}')
         if 'test' in key:
             test_df = pd.concat([test_df, category_df], axis=0)
 
     train_orig_df = df[~df.image_id.isin(test_df.image_id)]
     for key, category_df in aug_test_dict.items():
         # stack test dataframes for all categories
-        print(f'Starting augmented loop for {key}')
-
         if 'augmented' in key:
-            print(category_df.columns)
             category = key[10:-3]
             n_original = len(train_orig_df.query(f'dx == "{category}"'))
             n_augmented = class_size - n_original
@@ -99,14 +95,12 @@ def multiclass_balancer(df, aug_test_dict, class_size=2000):
                 print('********* Multiclass balancer Error *************')
                 print(f'class_size={class_size}, n_augmented={n_augmented}')
                 exit(-1)
-    print(f'train_aug_df.shape={train_aug_df.shape}')
-    print(f'test_df.shape={test_df.shape}')
 
     # select n=class_size images for each class
     train_df = train_aug_df
 
-    print(f'train_orig_df.shape={train_orig_df.shape}')
     print(f'train_df.shape={train_df.shape}')
+    print(f'test_df.shape={test_df.shape}')
     print('********** Taking augmented MULTICLASS data **********')
     return train_df, test_df
 

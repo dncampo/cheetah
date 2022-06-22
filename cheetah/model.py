@@ -151,14 +151,14 @@ def compile_multiclass(model,learning_rate=0.0003, beta_1=0.9, beta_2=0.999):
     adam_opt = optimizers.Adam(learning_rate=learning_rate/10,
                                 beta_1=beta_1, beta_2=beta_2)
 
-    model.compile(loss=CategoricalCrossentropy(from_logits=True),
+    model.compile(loss=CategoricalCrossentropy(),
                 optimizer=adam_opt,
-                metrics=[Accuracy()]) #, Recall(), Precision()
+                metrics=['accuracy', Recall(name='recall'), Precision()])
     return model
 
 @timer_func
 def fit_with_earlystop(model, train_set, validation_set, patience=20):
-    es = EarlyStopping(patience=patience, restore_best_weights=True)
+    es = EarlyStopping(monitor='val_recall', mode='max', patience=patience, restore_best_weights=True)
 
     model.fit(train_set,
             validation_data=validation_set,
