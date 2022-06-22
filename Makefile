@@ -111,14 +111,13 @@ gcp_submit_training_augmented:
 		--region ${REGION} \
 		--stream-logs
 
-gcp_submit_training_basic:
+gcp_submit_training_multiclass:
 	gcloud ai-platform jobs submit training ${JOB_NAME} \
 		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER} \
 		--package-path ${PACKAGE_NAME} \
-		--module-name ${PACKAGE_NAME}.${FILENAME} \
+		--module-name ${PACKAGE_NAME}.multiclass.${FILENAME} \
 		--python-version=${PYTHON_VERSION} \
 		--runtime-version=${RUNTIME_VERSION} \
-		--config config/config_basic.yaml \
 		--region ${REGION} \
 		--stream-logs
 
