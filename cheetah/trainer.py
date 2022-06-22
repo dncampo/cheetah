@@ -15,7 +15,6 @@ class Trainer(MLFlowBase):
             MLFLOW_URI)
 
     def train(self):
-
         # create a mlflow training
         self.mlflow_create_run()
 

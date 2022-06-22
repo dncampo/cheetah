@@ -25,6 +25,7 @@ REGION='europe-west1'
 BUCKET_TRAIN_DATA_PATH = 'data/raw_data/HAM10000_metadata.csv'
 BUCKET_AUGMENT_DATA_PATH = 'data/raw_data/augment/mel/mel_augmented.csv'
 BUCKET_TEST_DATA_PATH = 'data/raw_data/augment/mel/mel_test.csv'
+BUCKET_AUGMENT_PATH = 'data/raw_data/augment/'
 BUCKET_IMAGE_FOLDER = 'data/raw_data/'
 
 ##### Training  - - - - - - - - - - - - - - - - - - - - - -
@@ -34,7 +35,7 @@ BUCKET_IMAGE_FOLDER = 'data/raw_data/'
 ##### Model - - - - - - - - - - - - - - - - - - - - - - - -
 
 # model folder name (will contain the folders for all trained model versions)
-MODEL_NAME = 'ResNet50_finetuned'
+MODEL_NAME = 'ResNet50_multiclass'
 
 ##### Package params  - - - - - - - - - - - - - - - - - - -
 
