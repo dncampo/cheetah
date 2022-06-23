@@ -1,4 +1,5 @@
 from distutils.command.upload import upload
+from statistics import mode
 from unittest.main import MAIN_EXAMPLES
 import streamlit as st
 from streamlit_option_menu import option_menu
@@ -10,7 +11,7 @@ import tensorflow.keras.models as tfkm
 
 
 '''
-# HAM10000k front-end
+# Cheetah - Melanoma detection
 '''
 
 MAIN_MENU = "Main Menu"
@@ -20,41 +21,38 @@ UPLOAD_PHOTO = "Upload photo"
 SETTINGS = "Settings"
 
 @st.cache(allow_output_mutation=True)
-def load_model():
-    print("loading model: ")
-#    if not 'model' in globals():
-    #json_file = open(os.path.join('models', 'model_architecture.json'), 'r')
-    #json_savedModel= json_file.read()
-    #return tfkm.model_from_json(json_savedModel)
-    model = tfkm.load_model('models/ResNet50_finetuned_20220620_134553.h5')
-    return model
+def load_models():
+    print("loading models: ")
+    model_bin_96 = tfkm.load_model('models/ResNet50_finetuned_20220620_134553.h5')
+    print("Binary model loaded.")
+    model_cat_84 = tfkm.load_model('models/ResNet50_multiclass_20220623_121940.h5')
+    print("Categorical model loaded.")
+    return model_bin_96, model_cat_84
 
-#pre trained model to do predictions
-
-model = load_model()
+#pre trained models to do predictions
+model_binary, model_categorical = load_models()
 
 
 
 # 1. as sidebar menu
 with st.sidebar:
-    selected = option_menu(MAIN_MENU, [HOME, TEST_PHOTO, UPLOAD_PHOTO, SETTINGS],
-        icons=['house', 'list-task' , 'cloud-upload', 'gear'], menu_icon="cast", default_index=0)
+    selected = option_menu(MAIN_MENU, [HOME,  UPLOAD_PHOTO],
+        icons=['house', 'cloud-upload'], menu_icon="cast", default_index=0)
     print(selected)
 
 if selected==HOME:
     home()
 
-
 elif selected==UPLOAD_PHOTO:
-    upload_photo(model)
+    upload_photo(model_binary, model_categorical)
 
 
 
 # 2. horizontal menu
-#selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
+# selected2 = option_menu(None, ["Home", "Upload", "Tasks", 'Settings'],
 #    icons=['house', 'cloud-upload', "list-task", 'gear'],
 #    menu_icon="cast", default_index=0, orientation="horizontal")
-#selected2
+# selected2
 
 # 3. CSS style definitions
 #selected3 = option_menu(None, ["Home", "Upload",  "Tasks", 'Settings'],

@@ -4,16 +4,16 @@ def home():
     '''Just renders a home page'''
     print("You clicked home")
     st.markdown('''
-    This is the home page
+    ## Gestion sensible du RDV chez le dermatologue
     ''')
 
-    st.markdown('''
-    ## presentation, project description, about
-    ''')
+    # st.markdown('''
+    # ## presentation, project description, about
+    # ''')
 
 
-    url = '<insert here the url of the API in order to predcit with the model'
+    # url = '<insert here the url of the API in order to predcit with the model'
 
-    '''
-    ## Finally, we can display the prediction to the user
-    '''
+    # '''
+    # ## Finally, we can display the prediction to the user
+    # '''
