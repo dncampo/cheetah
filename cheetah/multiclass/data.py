@@ -40,7 +40,7 @@ def get_augmented_and_test():
         if ENV == 'local':
             prefix_path = ''
             path = f'raw_data/augment/'
-            test_path = f'raw_data/augment/{label}/{label}_augmented.csv'
+            test_path = f'raw_data/augment/{label}/{label}_test.csv'
         df = pd.read_csv(os.path.join(path,label,f'{label}_augmented.csv'))
         test_df = pd.read_csv(test_path)
         if prefix_path != '':

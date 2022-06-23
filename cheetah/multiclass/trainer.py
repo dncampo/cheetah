@@ -6,6 +6,7 @@ from cheetah.multiclass.pipeline import prepare_dataset, tf_train_val_split
 from cheetah.utils import configure_for_performance
 from cheetah.model import compile_multiclass, initialize_model, fit_with_earlystop
 from datetime import datetime
+from cheetah.save_model import save_model
 import os
 
 
@@ -53,7 +54,7 @@ class Trainer(MLFlowBase):
         # train model and get duration via timer_func decorator
         model, duration = fit_with_earlystop(model, train, val, patience=4)
         # evaluate model and get loss and accuracy
-        #[loss, accuracy, recall, precision] = model.evaluate(test)
+
         loss, *metrics = model.evaluate(test)
         # save the trained model
         model_path = ''
@@ -61,14 +62,14 @@ class Trainer(MLFlowBase):
         if os.environ.get('ENV') == 'gcp':
             model_path = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
 
-        model.save(model_path + MODEL_NAME + "_" + ts_str + ".h5")
+        model_filename = MODEL_NAME + "_" + ts_str + ".h5"
+        save_model(model, model_filename)
 
         # register metrics and custom parameters in MLFlow
         self.mlflow_log_metric("loss", loss)
         self.mlflow_log_metric("accuracy", metrics[0])
         self.mlflow_log_metric("recall", metrics[1])
         self.mlflow_log_metric("precision", metrics[2])
-
 
         self.mlflow_log_param("model_name", MODEL_NAME)
         self.mlflow_log_param("batch_size",BATCH_SIZE)

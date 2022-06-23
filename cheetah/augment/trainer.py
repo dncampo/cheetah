@@ -5,6 +5,7 @@ from cheetah import data
 from cheetah.pipeline import prepare_dataset, tf_train_val_split
 from cheetah.utils import configure_for_performance
 from cheetah.model import initialize_model, compile, fit_with_earlystop
+from cheetah.save_model import save_model
 import os
 from datetime import datetime
 import pandas as pd
@@ -62,7 +63,8 @@ class Trainer(MLFlowBase):
         if os.environ.get('ENV') == 'gcp':
             model_path = f'gs://{BUCKET_NAME}/{BUCKET_TRAINING_FOLDER}/'
 
-        model.save(model_path + MODEL_NAME + "_" + ts_str + ".h5")
+        model_filename = MODEL_NAME + "_" + ts_str + ".h5"
+        save_model(model, model_filename)
 
         # register metrics and custom parameters in MLFlow
         self.mlflow_log_metric("loss", loss)
@@ -76,8 +78,6 @@ class Trainer(MLFlowBase):
         self.mlflow_log_param("n_params", f'{model.count_params():,}')
         self.mlflow_log_param("duration", f'{duration:.2f}')
         self.mlflow_log_param("env", os.environ.get('ENV', default="gcp"))
-
-
 
         return model
 
