@@ -4,7 +4,7 @@ def home():
     '''Just renders a home page'''
     print("You clicked home")
     st.markdown('''
-    ## Gestion sensible du RDV chez le dermatologue
+    ## DermaDashboard
     ''')
 
     # st.markdown('''

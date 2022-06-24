@@ -10,22 +10,32 @@ import os
 import tensorflow.keras.models as tfkm
 
 
+st.markdown("""
+<style>
+body {
+    background-color: #ffbc00;
+}
+</style>
+    """, unsafe_allow_html=True)
+
 '''
-# Cheetah - Melanoma detection
+# Cheetah Melanoma Detection
 '''
 
-MAIN_MENU = "Main Menu"
-HOME = "Home"
+MAIN_MENU = "Cheetah"
+HOME = "DermaDashboard"
 TEST_PHOTO = "Select from test photos"
-UPLOAD_PHOTO = "Upload photo"
+UPLOAD_PHOTO = "Get Priority"
 SETTINGS = "Settings"
 
 @st.cache(allow_output_mutation=True)
 def load_models():
     print("loading models: ")
     model_bin_96 = tfkm.load_model('models/ResNet50_finetuned_20220620_134553.h5')
+    # model_bin_96 = tfkm.load_model('models/ResNet50_finetuned_20220621_191452.h5') #version Abdiel
     print("Binary model loaded.")
     model_cat_84 = tfkm.load_model('models/ResNet50_multiclass_20220623_121940.h5')
+    # model_cat_84 = tfkm.load_model('models/models_ResNet50_multiclass_20220623_121940.h5') #version Abdiel
     print("Categorical model loaded.")
     return model_bin_96, model_cat_84
 
@@ -33,11 +43,10 @@ def load_models():
 model_binary, model_categorical = load_models()
 
 
-
 # 1. as sidebar menu
 with st.sidebar:
-    selected = option_menu(MAIN_MENU, [HOME,  UPLOAD_PHOTO],
-        icons=['house', 'cloud-upload'], menu_icon="cast", default_index=0)
+    selected = option_menu(MAIN_MENU, [UPLOAD_PHOTO, HOME],
+        icons=[ 'cloud-upload', 'house'], menu_icon="", default_index=0)
     print(selected)
 
 if selected==HOME:

@@ -15,16 +15,18 @@ def get_n_highest_clases(result, n=3):
 
 def upload_photo(model_bin, model_cat):
     '''Shows a button in order to present a upload dialog to submit an image'''
-
+    st.markdown('''
+    ## Upload patient's image
+    ''')
     st.set_option('deprecation.showfileUploaderEncoding', False)
-    to_upload = st.file_uploader("Upload a photo to be classified",
+    to_upload = st.file_uploader("",
                                  type=([".png", ".jpg", "jpeg", "tiff", "gif", "tga", "bmp"]))
     if to_upload is not None:
         image = Image.open(to_upload)
         st.image(image, width=300,
                  caption='Selected image to be classified', use_column_width=False)
 
-        if st.button('Send image to be assessed'):
+        if st.button('Get Priority'):
             # print is visible in the server output, not in the page
             st.write('Sending image to the model to be assessed')
 
@@ -45,7 +47,7 @@ def upload_photo(model_bin, model_cat):
                 st.info(f"Prioritary appointment. ({result_bin[0]:.2f})")
                 if st.button('Schedule appointment'):
                     # print is visible in the server output, not in the page
-                    st.write('Appointment scheled for ...')
+                    st.write('Appointment scheduled.')
                 else:
                     st.write('Please, notify results to the dermatologist and schedule an appoitment')
 
@@ -54,13 +56,13 @@ def upload_photo(model_bin, model_cat):
                 #binary says it's not melanome
                 result_cat = model_cat.predict(image_np)[0]
                 result_cat = {
-                'Actinic Keratoses / Intrapithelial Carcinoma (akiec)': result_cat[0],
-                'Basal Cell Carcinoma (bcc)': result_cat[1],
-                'Benign Keratosis (bkl)': result_cat[2],
-                'Dermatofibroma (df)': result_cat[3],
-                'Melanoma (mel)': result_cat[4],
-                'Melanocytic Nevi (nv)': result_cat[5],
-                'Vascula skin lesion (vasc)': result_cat[6]
+                'Actinic Keratoses / Intrapithelial Carcinoma': result_cat[0],
+                'Basal Cell Carcinoma ': result_cat[1],
+                'Benign Keratosis ': result_cat[2],
+                'Dermatofibroma ': result_cat[3],
+                'Melanoma ': result_cat[4],
+                'Melanocytic Nevi ': result_cat[5],
+                'Vascula skin lesion ': result_cat[6]
                 }
 
                 print(f"result_cat: {result_cat}")
@@ -71,10 +73,16 @@ def upload_photo(model_bin, model_cat):
                 print(f"highest values are: {n_highest}")
                 print(f"highest values are: {n_highest_values}")
                 for cat, val in n_highest_zip:
+                    val = val *100
                     st.info(
                         f'''
-                        ##### {cat} -> {val:.6f}
+                        ##### {cat} : {val:.4f}%
                         '''
                     )
         else:
             pass
+
+
+@st.cache
+def rdv_success():
+    st.success('Appointment scheduled.')
