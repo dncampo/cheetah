@@ -45,10 +45,11 @@ def upload_photo(model_bin, model_cat):
                 st.info(f"Prioritary appointment. ({result_bin[0]:.2f})")
                 if st.button('Schedule appointment'):
                     # print is visible in the server output, not in the page
-                    st.write('Appointment scheled for ...')
+                    st.write('Appointment scheduled for ...')
+                    if st.write('Ok'):
+                        return
                 else:
                     st.write('Please, notify results to the dermatologist and schedule an appoitment')
-
 
             else:
                 #binary says it's not melanome

@@ -67,6 +67,12 @@ deploy_heroku:
 	-@heroku ps:scale web=1
 
 
+# ----------------------------------
+#         API COMMANDS
+# ----------------------------------
+run_api:
+	uvicorn api.fast:app --reload  # load web server with code autoreload
+
 
 # ----------------------------------
 #         GCP COMMANDS

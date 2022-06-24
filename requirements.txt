@@ -32,3 +32,7 @@ termcolor
 
 streamlit
 streamlit-option-menu
+
+fastapi
+uvicorn
+python-multipart
