@@ -44,8 +44,8 @@ def upload_photo(model_bin, model_cat):
             result_bin = model_bin.predict(image_np)[0]
             print(f"result_bin: {result_bin}")
             if result_bin[0] >= 0.60:
-                st.info(f"Prioritary appointment. ({result_bin[0]:.2f})")
-                if st.button('Schedule appointment'):
+                st.info(f"### Melanome detected. ({100*result_bin[0]:.1f}%)")
+                if st.button('Priority appointment'):
                     # print is visible in the server output, not in the page
                     st.write('Appointment scheduled.')
                 else:
@@ -76,7 +76,7 @@ def upload_photo(model_bin, model_cat):
                     val = val *100
                     st.info(
                         f'''
-                        ##### {cat} : {val:.4f}%
+                        ##### {cat} : {val:.1f}%
                         '''
                     )
         else:
