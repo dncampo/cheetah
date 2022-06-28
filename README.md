@@ -1,5 +1,5 @@
 # Data analysis
-- Description: Cheetah Melanoma Detection is a solution to analyse skin lesions and assign a priority score to schedule an appointment with the specialist based on the three most probable skin lesions detected by the model.
+- Description: Cheetah Melanoma Detection is a solution to analyse skin lesions and assign a priority score based on the three most probable skin lesions detected by the model in order to schedule an appointment with the specialist.
 - Data Source: HAM10000 dataset from ISIC archive
 - Type of analysis: Deep Learning binary and multiclass models.
 
