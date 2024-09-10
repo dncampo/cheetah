@@ -27,4 +27,5 @@ def save_model(model, filename):
     # Implement here
     model.save(filename)
     print(f"saved h5 model locally, with filename: {filename}")
-    upload_model_to_gcp(model, filename)
+    if os.environ.get('ENV') == 'gcp':
+        upload_model_to_gcp(model, filename)

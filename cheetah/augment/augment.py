@@ -28,7 +28,7 @@ class Augment():
        print("metadata not generated yet") Also, writes in output folder the augmented images, the metadata of
             the augmented images and a test.csv with the path to the original
             files to be used for testing (and whose were not seen for augmentation)
-            The test.csv file only saves original images, no mater of
+            The test.csv file only saves original images, no matter of
             share_test_original value.
     '''
     def __init__(self, class_augment='mel', N=1120, share_test=0.10, share_test_original=True,
@@ -135,5 +135,7 @@ class Augment():
 
 
 if __name__ == '__main__':
-    augment = Augment(N=6705)
+    augment = Augment(class_augment='df', N=500, share_test_original=False)
+
+    #augment = Augment(class_augment='bcc', N=6705)
     #augment = Augment(N=1300)

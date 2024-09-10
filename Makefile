@@ -89,6 +89,12 @@ upload_data:
 run_locally:
 	export ENV=local && python -m ${PACKAGE_NAME}.${FILENAME}
 
+run_locally_multiclass:
+	export ENV=local && python -m ${PACKAGE_NAME}.multiclass.${FILENAME}
+
+debug_locally:
+	export ENV=local && python -m ${PACKAGE_NAME}.${FILENAME} --debug
+
 JOB_NAME=${PACKAGE_NAME}_${MODEL_NAME}_${MODEL_VERSION}_$(shell date +'%Y%m%d_%H%M%S')
 
 gcp_submit_training:
